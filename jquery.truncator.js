@@ -16,14 +16,14 @@
       if (content_length <= opts.max_length)
         return;  // bail early if not overlong
 
-      var actual_max_length = opts.max_length - opts.more.length - 3;  // 3 for " ()"
+      var actual_max_length = opts.max_length - opts.more.length - 1;  // 1 for leading whitespace
       var truncated_node = recursivelyTruncate(this, actual_max_length);
       var full_node = $(this).hide();
 
       truncated_node.insertAfter(full_node);
       
-      findNodeForMore(truncated_node).append(' (<a href="#show more content">'+opts.more+'</a>)');
-      findNodeForLess(full_node).append(' (<a href="#show less content">'+opts.less+'</a>)');
+      findNodeForMore(truncated_node).append(' <a href="#show more content">'+opts.more+'</a>');
+      findNodeForLess(full_node).append(' <a href="#show less content">'+opts.less+'</a>');
       
       truncated_node.find('a:last').click(function() {
         truncated_node.hide(); full_node.show(); return false;
@@ -39,8 +39,8 @@
   // length of 10 would truncate "1234567890" to "12 (…more)".
   $.fn.truncate.defaults = {
     max_length: 100,
-    more: '…more',
-    less: 'less'
+    more: '(…more)',
+    less: '(less)'
   };
 
   function recursivelyTruncate(node, max_length) {
